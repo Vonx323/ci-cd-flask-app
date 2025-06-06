@@ -1,0 +1,17 @@
+import pytest
+from app.main import app
+
+@pytest.fixture
+def client():
+    with app.test_client() as client:
+        yield client
+
+def test_home(client):
+    response = client.get('/')
+    assert response.status_code == 200
+    assert response.json['message'] == "Welcome to the CI/CD Demo App!"
+
+def test_greet(client):
+    response = client.get('/greet/Debbie')
+    assert response.status_code == 200
+    assert response.json['message'] == "Hello, Debbie!"
